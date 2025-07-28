@@ -70,42 +70,38 @@ export const App = () => {
     setThemeMode(themeMode === 'light' ? 'dark' : 'light')
   }
 
-  const changeFilter = (todolistId: string, filter: FilterValues) => {
-    setTodolists(todolists.map(todolist => todolist.id === todolistId ? {...todolist, filter} : todolist))
-  }
-
+  //TODOLIST
   const createTodolist = (title: string) => {
     const todolistId = v1()
     const newTodolist: Todolist = {id: todolistId, title, filter: 'all'}
     setTodolists([newTodolist, ...todolists])
     setTasks({...tasks, [todolistId]: []})
   }
-
+  const changeFilter = (todolistId: string, filter: FilterValues) => {
+    setTodolists(todolists.map(todolist => todolist.id === todolistId ? {...todolist, filter} : todolist))
+  }
+  const changeTodolistTitle = (todolistId: string, title: string) => {
+    setTodolists(todolists.map(todolist => todolist.id === todolistId ? {...todolist, title} : todolist))
+  }
   const deleteTodolist = (todolistId: string) => {
     setTodolists(todolists.filter(todolist => todolist.id !== todolistId))
     delete tasks[todolistId]
     setTasks({...tasks})
   }
 
-  const changeTodolistTitle = (todolistId: string, title: string) => {
-    setTodolists(todolists.map(todolist => todolist.id === todolistId ? {...todolist, title} : todolist))
-  }
-
-  const deleteTask = (todolistId: string, taskId: string) => {
-    setTasks({...tasks, [todolistId]: tasks[todolistId].filter(task => task.id !== taskId)})
-  }
-
+  //TASKS
   const createTask = (todolistId: string, title: string) => {
     const newTask = {id: v1(), title, isDone: false}
     setTasks({...tasks, [todolistId]: [newTask, ...tasks[todolistId]]})
   }
-
   const changeTaskStatus = (todolistId: string, taskId: string, isDone: boolean) => {
     setTasks({...tasks, [todolistId]: tasks[todolistId].map(task => task.id == taskId ? {...task, isDone} : task)})
   }
-
   const changeTaskTitle = (todolistId: string, taskId: string, title: string) => {
     setTasks({...tasks, [todolistId]: tasks[todolistId].map(task => task.id === taskId ? {...task, title} : task)})
+  }
+  const deleteTask = (todolistId: string, taskId: string) => {
+    setTasks({...tasks, [todolistId]: tasks[todolistId].filter(task => task.id !== taskId)})
   }
 
   return (
